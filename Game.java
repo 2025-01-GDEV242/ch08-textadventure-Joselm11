@@ -11,7 +11,7 @@
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
+ * @author  Jose Moreno
  * @version 2016.02.29
  */
 
@@ -34,30 +34,40 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room outside, ticketBooth, lobby, frontDesk, bathroom, theater, parking, arcade;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        
+        parking = new Room("Parking lot"); // keys item
+        outside = new Room("outside of the threater");
+        ticketBooth = new Room("ticket booth"); //ticket item
+        lobby = new Room("lobby of the movie theatre");
+        bathroom = new Room("Bathroom");
+        theater = new Room("seating for movie theater");
+        frontDesk = new Room("Front desk, they have snacks"); //snack item
+        arcade = new Room ("Old school arcade");
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        outside.setExit("east", ticketBooth);
+        outside.setExit("south", parking);
+        
+        parking.setExit("north", outside);
+        
+        ticketBooth.setExit("north", lobby);
+        ticketBooth.setExit("west", outside);
 
-        theater.setExit("west", outside);
+        lobby.setExit("east", bathroom);
+        lobby.setExit("north", theater);
+        lobby.setExit("west", frontDesk);
+        
+        bathroom.setExit("west", lobby);
+        
+        theater.setExit("south", lobby);
+        
+        frontDesk.setExit("west", arcade);
+        frontDesk.setExit("east", lobby);
+        
+        arcade.setExit("east", frontDesk);
 
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        currentRoom = parking;  // start game outside
     }
 
     /**
@@ -84,8 +94,8 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the Titan Luxe!");
+        System.out.println("We have very basic movies");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
@@ -131,8 +141,7 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You are lost. You are alone. You don't know what movie to watch");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
