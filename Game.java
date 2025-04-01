@@ -40,7 +40,7 @@ public class Game
         parking = new Room("Parking lot"); // keys item
         outside = new Room("outside of the threater");
         ticketBooth = new Room("ticket booth"); //ticket item
-        lobby = new Room("lobby of the movie theatre");
+        lobby = new Room("lobby of the movie theater");
         bathroom = new Room("Bathroom");
         theater = new Room("seating for movie theater");
         frontDesk = new Room("Front desk, they have snacks"); //snack item
@@ -66,8 +66,13 @@ public class Game
         frontDesk.setExit("east", lobby);
         
         arcade.setExit("east", frontDesk);
+        
+        // Adding items to rooms
+        parking.addItem("keys", "A set of car keys.");
+        ticketBooth.addItem("ticket", "A movie ticket.");
+        frontDesk.addItem("snack", "A bag of popcorn.");
 
-        currentRoom = parking;  // start game outside
+        currentRoom = parking;  // start game in parking lot
     }
 
     /**
@@ -96,6 +101,7 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the Titan Luxe!");
         System.out.println("We have very basic movies");
+        System.out.println("your goal is to explore and find your way to the theater"); 
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
