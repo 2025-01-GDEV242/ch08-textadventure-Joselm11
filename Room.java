@@ -1,36 +1,36 @@
 import java.util.Set;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
+ * This class is part of the Movie theater application. 
+ * Movie theater is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
- * stores a reference to the neighboring room.
+ * stores a reference to the neighboring room. it also has a list of items
  * 
- * @author  Michael Kölling and David J. Barnes
+ * @author Jose Moreno
  * @version 2016.02.29
  */
 
 public class Room 
 {
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Room> exits; 
+    private ArrayList<String> items; // Multiple items in a room
 
     /**
-     * Create a room described "description". Initially, it has
-     * no exits. "description" is something like "a kitchen" or
-     * "an open court yard".
+     * Create a room with a description. Initially, it has no exits or items.
      * @param description The room's description.
      */
     public Room(String description) 
     {
         this.description = description;
         exits = new HashMap<>();
+        items = new ArrayList<>(); // Initialize empty item list
     }
 
     /**
@@ -44,8 +44,26 @@ public class Room
     }
 
     /**
-     * @return The short description of the room
-     * (the one that was defined in the constructor).
+     * Add an item to the room.
+     * @param item The item to add.
+     */
+    public void addItem(String item)
+    {
+        items.add(item);
+    }
+
+    /**
+     * Remove an item from the room.
+     * @param item The item to remove.
+     * @return true if the item was removed, false if it was not found.
+     */
+    public boolean removeItem(String item)
+    {
+        return items.remove(item);
+    }
+
+    /**
+     * @return The short description of the room.
      */
     public String getShortDescription()
     {
@@ -53,34 +71,46 @@ public class Room
     }
 
     /**
-     * Return a description of the room in the form:
-     *     You are in the kitchen.
-     *     Exits: north west
-     * @return A long description of this room
+     * Return a description of the room, including items and exits.
+     * @return A long description of this room.
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        String descriptionText = "You are " + description + ".\n" + getExitString();
+        
+        if (!items.isEmpty()) {
+            descriptionText += "\nItems in the room: " + String.join(", ", items);
+        }
+        
+        return descriptionText;
+    }
+    
+     /**
+     * Checks if the room contains a specific item.
+     * 
+     * @param item the item to check
+     * @return true if the room contains the item, false otherwise
+     */
+    public boolean hasItem(String item) {
+    return items.contains(item);
     }
 
+
     /**
-     * Return a string describing the room's exits, for example
-     * "Exits: north west".
+     * Return a string describing the room's exits.
      * @return Details of the room's exits.
      */
     private String getExitString()
     {
         String returnString = "Exits:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys) {
+        for(String exit : exits.keySet()) {
             returnString += " " + exit;
         }
         return returnString;
     }
 
     /**
-     * Return the room that is reached if we go from this room in direction
-     * "direction". If there is no room in that direction, return null.
+     * Return the room that is reached if we go from this room in direction.
      * @param direction The exit's direction.
      * @return The room in the given direction.
      */
@@ -88,5 +118,12 @@ public class Room
     {
         return exits.get(direction);
     }
-}
 
+    /**
+     * @return The list of items in this room.
+     */
+    public ArrayList<String> getItems()
+    {
+        return items;
+    }
+}
